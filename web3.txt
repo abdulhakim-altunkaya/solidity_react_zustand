@@ -1,0 +1,102 @@
+🚩🚩🚩 INSTALL PART 🚩🚩🚩
+
+
+⏩ Create a github repo on Github, copy the repo link and go to any place on your computer and:
+git clone ...link.......
+
+⏩ npx create-react-app .
+
+⏩npm install "react-router-dom" "hardhat" "ethers" "zustand" "@nomicfoundation/hardhat-toolbox" "dotenv" "@nomiclabs/hardhat-ethers" "@openzeppelin/contracts" "@chainlink/contracts" "@nomicfoundation/hardhat-network-helpers@^1.0.0" "@nomicfoundation/hardhat-chai-matchers@^1.0.0" "@nomiclabs/hardhat-etherscan@^3.0.0" "@types/mocha@^9.1.0" "@typechain/ethers-v5@^10.1.0" "@typechain/hardhat@^6.1.2" "chai@^4.2.0" "ts-node@>=8.0.0" "typechain@^8.1.0" "typescript@>=4.5.0"
+
+
+⏩ npx hardhat
+
+⏩ test react website and make a cleanup
+npm start
+
+
+🚩🚩🚩 DOTENV and HARDHAT.CONFIG PART 🚩🚩🚩
+
+⏩ Make sure you are on Metamask BNB testnet and that you have test BNB
+
+⏩ create a .env file at the root of the folder and put inside code below. Be careful about 
+template literals and quotes.
+
+PROVIDER_URL=`https://rpc.ankr.com/bsc_testnet_chapel`
+PRIVATE_KEY="be9447a803901b07fb1381Ba796260656a8fFa1001fd67cc26459ad9999ccd25"
+
+
+⏩ Add ".env" to your .gitignore file
+
+
+🚩🚩🚩  CONTRACT PART 🚩🚩🚩
+
+⏩ Create your contract: Nusaybin.sol and paste inside:
+
+//SPDX-License-Identifier: MIT
+pragma solidity >=0.8.7;
+contract Something {
+    string public myCity = "Cizre";
+}
+
+⏩ Make sure compiler versions are the same across ".sol" and "hardhat.config.js" files
+
+⏩ Then configure deploy.js
+async function main() {
+  const Something = await hre.ethers.getContractFactory("Something");
+  const something = await Something.deploy();
+  await something.deployed();
+  console.log(`something is deployed to ${something.address}`);
+}
+
+⏩ Go to hardhat.config.js and put inside:
+
+require("@nomicfoundation/hardhat-toolbox");
+require("@nomiclabs/hardhat-ethers");
+require("dotenv").config();
+
+module.exports = {
+  solidity: "0.8.7",
+  networks: {
+    bnb: {
+      url: process.env.PROVIDER_URL,
+      accounts: [`0x${process.env.PRIVATE_KEY}`]
+    }
+  }
+};
+
+
+
+⏩ Make sure you contract and hardhat.config file have the same compiler version.
+
+⏩ npx hardhat compile
+
+⏩ npx hardhat run ./scripts/deploy.js --network bnb
+
+
+🚩🚩🚩  COMPONENTS PART 🚩🚩🚩
+
+⏩Create "ContractABI.js" put inside:
+export const CONTRACT_ABI = [...]
+
+
+⏩Create "ContractAddress.js" and put inside:
+export const CONTRACT_ADDRESS = "...."
+
+⏩ Add CSS
+body {
+    background-color: palevioletred;
+    font-family: tahoma;
+    font-size: 33px;
+    text-align: center;	
+  }
+  button {
+    background-color: aquamarine;
+    font-size: 33px;
+    padding: 5px;
+    font-family: Impact;
+    margin: 10px;
+  }
+  button:hover {
+    background-color: yellow;
+  }
